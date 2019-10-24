@@ -12,6 +12,4 @@ public class HelloController {
 
         return "this is a test";
     }
-
-
 }
