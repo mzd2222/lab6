@@ -5,6 +5,10 @@ spring:
     password: wa131452
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
+    #    initialization-mode: AlWAYS
+    #    schema:
+    #      - classpath*:department.sql
+    #      - classpath*:employee.sql
     #spring.datasource.schema=classpath*:department.sql
 
     initialSize: 5
@@ -19,7 +23,15 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-    filters: stat,wall
+    filters: stat,wall,log4j
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+
+server:
+  port: 8001
+
+mybatis:
+  config-location: classpath:mybatis/mybatis_config.xml #指定全局配置文件位置
+  mapper-locations: classpath:mybatis/mapper/*.xml      #指定sql映射文件位置

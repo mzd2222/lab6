@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="datatest.mapper.EmployeeMapper">
+    <!--public Employee getEmployee(Integer id);
+        public void insertEmployee(Employee employee);  -->
+    <select id="getEmployee" resultType="datatest.Bean.Employee">
+        select * from employee where id = #{id}
+    </select>
+
+    <insert id="insertEmployee">
+        insert into employee(lastName,email,gender,d_id) values (#{lastName},#{email},#{gender},#{dId})
+    </insert>
+</mapper>

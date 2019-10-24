@@ -1,16 +1,38 @@
 package datatest.Controller;
 
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import datatest.Bean.Department;
+import datatest.Bean.Employee;
+import datatest.mapper.DepartmentMapper;
+import datatest.mapper.EmployeeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class HelloController {
 
-    @ResponseBody
-    @RequestMapping("/")
-    public String hello() {
-        return "this is a change test";
+    @Autowired
+    DepartmentMapper departmentMapper;
+
+    @Autowired
+    EmployeeMapper employeeMapper;
+
+    @GetMapping("/get/{id}")
+    public Department hello(@PathVariable("id") Integer id) {
+        return departmentMapper.getDepById(id);
     }
+
+    @GetMapping("/")
+    public String Hello() {
+        return "Start";
+    }
+
+    @GetMapping("/get2/{id}")
+    public Employee hello2(@PathVariable("id") Integer id) {
+        return employeeMapper.getEmployee(id);
+
+    }
+
 }
