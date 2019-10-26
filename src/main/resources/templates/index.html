@@ -34,13 +34,10 @@
                     if (response['status'] == 'ok') {
                         alert('登录成功');
                         alert(response['username']);
-                        alert(response['characterName']);
-                        // alert(response['vehiclename'])
-                        // window.location.href = "/main/?username=" + username + "&vehicle=" + response['vehiclename'];
+                        // window.location.href =
                     } else {
-
+                        // alert(response['status']);
                         alert('没有这个用户');
-                        // alert(response['vehiclename'])
                     }
                 },
                 error: function (response) {
@@ -51,27 +48,50 @@
     }
 
     function zhuce() {
-        document.getElementById('zhuce').innerHTML = '<div class="container" style="display: inline;" id="denglu"><h1 class="row justify-content-center font-weight-normal text-light" style="font-size: 50px; margin-top: 10px;">请注册</h1><div class="row justify-content-center" style="margin-top: 50px;"><label for="username" class="sr-only">user name</label><input class="col-6 form-control-lg" type="text" id="username2" name="username" placeholder="username" required></div><div class="row justify-content-center mt-3"><input type="checkbox" id="checkbox"><h5 class="col-3 text-light">有无驾驶证</h5></div><div class="row justify-content-center" style="margin-top: 30px;"><button class="col-3 btn btn-lg btn-outline-primary" id="btn2" style="width: 450px;">注册</button></div><div class="row justify-content-center"><a class="mt-0 text-center text-light" href="javascript:0" onclick="denglu();">已有账号，去登陆</a></div></div>';
+        document.getElementById('zhuce').innerHTML = '<div class="container" style="display: inline;" id="denglu"><h1 class="row justify-content-center font-weight-normal text-light" style="font-size: 50px; margin-top: 10px;">请注册</h1><div class="row justify-content-center" style="margin-top: 50px;"><label for="username" class="sr-only">user name</label><input class="col-6 form-control-lg" type="text" id="username2" name="username" placeholder="username" required></div><div class="row justify-content-center mt-3"><h5 class="col-1 text-light">选择角色</h5><input type="checkbox" id="checkbox1"><h5 class="col-1 text-light">和尚</h5><input type="checkbox" id="checkbox2"><h5 class="col-1 text-light">女侠</h5><input type="checkbox" id="checkbox3"><h5 class="col-1 text-light">忍者</h5></div><div class="row justify-content-center" style="margin-top: 30px;"><button class="col-3 btn btn-lg btn-outline-primary" id="btn2" style="width: 450px;">注册</button></div><div class="row justify-content-center"><a class="mt-0 text-center text-light" href="javascript:0" onclick="denglu();">已有账号，去登陆</a></div></div>';
         $("#btn2").click(function (params) {
-            var canDrive = $("#checkbox").prop("checked")
-            username1 = $("#username2").val();
-            $.ajax({
-                type: "POST",
-                url: "/regist",
-                data: {"username": username1, "canDrive": canDrive},
-                success: function (response) {
-                    // alert(response);
-                    if (response == 'ok') {
-                        alert('注册成功');
-                        denglu();
-                    } else {
-                        alert('已经有这个用户');
+            var c1 = $("#checkbox1").prop("checked")
+            var c2 = $("#checkbox2").prop("checked")
+            var c3 = $("#checkbox3").prop("checked")
+            username2 = $("#username2").val();
+            if (c1 || c2 || c3) {
+                if ((c1 && c2) || (c1 && c3) || (c2 && c3)) {
+                    alert("只能选一个角色");
+
+                } else if (username2 != '') {
+                    alert(username2);
+                    if (c1) {
+                        var characterName = "monk";
                     }
-                },
-                error: function (response) {
-                    alert("连接失败，检查网络")
+                    if (c2) {
+                        var characterName = "swordwoman";
+                    }
+                    if (c3) {
+                        var characterName = "ninja";
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "/user",
+                        data: {"name": username2, "characterName": characterName},
+                        success: function (response) {
+                            // alert(response);
+                            if (response == 'ok') {
+                                alert('注册成功');
+                                denglu();
+                            } else {
+                                alert('已经有这个用户');
+                            }
+                        },
+                        error: function (response) {
+                            alert("连接失败，检查网络")
+                        }
+                    });
+                } else {
+                    alert("用户名不能为空");
                 }
-            });
+            } else {
+                alert("至少选择一个角色");
+            }
         })
     }
 

@@ -32,24 +32,23 @@
     </div>
 </div>
 
-<!--th:if="${asd}==1"-->
-<div id="bb" style="position: relative; top: 168px; right: -0px; max-width: 210px;">
+<div th:if="${msg}=='monk'" id="bb" style="position: relative; top: 168px; right: -0px; max-width: 210px;">
     <h5 style="position: absolute; left: 35px; top: 20px;">和尚</h5>
     <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">攻击</button>
     <img src="" th:src="@{/img/heshang.gif}" style="position: absolute;">
 </div>
 
-<!--<div th:if="${asd}==2" id="bb" style="position: relative; top: 168px; right: -0px; max-width: 210px;">-->
-<!--    <h5 style="position: absolute; left: 65px; top: -10px;">女侠</h5>-->
-<!--    <button scr="" class="btn btn-info" style="position: absolute; left: 55px; top: -50px;">攻击</button>-->
-<!--    <img src="" th:src="@{/img/nvxia.jpg}" style="max-width: 190px; position: absolute;">-->
-<!--</div>-->
+<div th:if="${msg}=='swordwoman'" id="bb" style="position: relative; top: 168px; right: -0px; max-width: 210px;">
+    <h5 style="position: absolute; left: 65px; top: -10px;">女侠</h5>
+    <button scr="" class="btn btn-info" style="position: absolute; left: 55px; top: -50px;">攻击</button>
+    <img src="" th:src="@{/img/nvxia.jpg}" style="max-width: 190px; position: absolute;">
+</div>
 
-<!--<div th:if="${asd}==3" id="bb" style="position: relative; top: 165px; right: -0px; max-width: 210px;">-->
-<!--    <h5 style="position: absolute; left: 70px; top: -18px;">忍者</h5>-->
-<!--    <button scr="" class="btn btn-info" style="position: absolute; left: 62px; top: -60px;">攻击</button>-->
-<!--    <img src="" th:src="@{/img/renzhe.png}" style="max-width: 190px; position: absolute;">-->
-<!--</div>-->
+<div th:if="${msg}=='ninja'" id="bb" style="position: relative; top: 165px; right: -0px; max-width: 210px;">
+    <h5 style="position: absolute; left: 70px; top: -18px;">忍者</h5>
+    <button scr="" class="btn btn-info" style="position: absolute; left: 62px; top: -60px;">攻击</button>
+    <img src="" th:src="@{/img/renzhe.png}" style="max-width: 190px; position: absolute;">
+</div>
 
 
 <hr style="margin-top: 390px; border-top: 10px solid rgb(0, 0, 0);"/>
