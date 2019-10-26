@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="no-referrer"/>
+    <!-- Bootstrap CSS Jquery -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" crossorigin="anonymous">
+    <script th:src="@{/js/jquery-3.4.1.js}" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-success">
+<div id="ini" style="margin-top: 180px;">
+</div>
+
+<script>
+    var username1;  //登录
+    var username2;  //注册
+
+    $(document).ready(denglu());
+
+    function denglu() {
+        document.getElementById('ini').innerHTML = '<div class="container" style="display: inline;" id="zhuce"><h1 class="row justify-content-center font-weight-normal text-light" style="font-size: 50px; margin-top: 10px;">请登录</h1><div class="row justify-content-center" style="margin-top: 50px;"><label for="username" class="sr-only">user name</label><input class="col-6 form-control-lg" type="text" id="username1" name="username" placeholder="username" required></div><div class="row justify-content-center" style="margin-top: 30px;"><button class="col-3 btn btn-lg btn-outline-primary" id="btn1" style="width: 450px;">登录</button></div><div class="row justify-content-center"><a class="mt-0 text-center text-light" href="javascript:0" onclick="zhuce();">免费注册</a></div></div>';
+        $("#btn1").click(function (params) {
+            username = $("#username1").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/log",
+                data: {"username": username},
+                success: function (response) {
+                    // alert(response);
+                    if (response['status'] == 'ok') {
+                        alert('登录成功');
+                        alert(response['username']);
+                        alert(response['characterName']);
+                        // alert(response['vehiclename'])
+                        // window.location.href = "/main/?username=" + username + "&vehicle=" + response['vehiclename'];
+                    } else {
+
+                        alert('没有这个用户');
+                        // alert(response['vehiclename'])
+                    }
+                },
+                error: function (response) {
+                    alert("连接失败，检查网络")
+                }
+            });
+        });
+    }
+
+    function zhuce() {
+        document.getElementById('zhuce').innerHTML = '<div class="container" style="display: inline;" id="denglu"><h1 class="row justify-content-center font-weight-normal text-light" style="font-size: 50px; margin-top: 10px;">请注册</h1><div class="row justify-content-center" style="margin-top: 50px;"><label for="username" class="sr-only">user name</label><input class="col-6 form-control-lg" type="text" id="username2" name="username" placeholder="username" required></div><div class="row justify-content-center mt-3"><input type="checkbox" id="checkbox"><h5 class="col-3 text-light">有无驾驶证</h5></div><div class="row justify-content-center" style="margin-top: 30px;"><button class="col-3 btn btn-lg btn-outline-primary" id="btn2" style="width: 450px;">注册</button></div><div class="row justify-content-center"><a class="mt-0 text-center text-light" href="javascript:0" onclick="denglu();">已有账号，去登陆</a></div></div>';
+        $("#btn2").click(function (params) {
+            var canDrive = $("#checkbox").prop("checked")
+            username1 = $("#username2").val();
+            $.ajax({
+                type: "POST",
+                url: "/regist",
+                data: {"username": username1, "canDrive": canDrive},
+                success: function (response) {
+                    // alert(response);
+                    if (response == 'ok') {
+                        alert('注册成功');
+                        denglu();
+                    } else {
+                        alert('已经有这个用户');
+                    }
+                },
+                error: function (response) {
+                    alert("连接失败，检查网络")
+                }
+            });
+        })
+    }
+
+
+</script>
+
+</body>
+
+</html>

@@ -29,6 +29,7 @@ public class SwordWoman implements Role {
         return red;
     }
 
+    @Override
     public void setWay(AttackWay way) {
         this.way = way;
     }

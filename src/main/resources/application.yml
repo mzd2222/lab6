@@ -1,4 +1,6 @@
 spring:
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   datasource:
     url: jdbc:mysql://localhost:3306/springboot?serverTimezone=UTC
     username: root
@@ -37,12 +39,9 @@ spring:
     show-sql: true
     open-in-view: false
 
-
 server:
-  port: 8001
+  port: 8000
 
-mybatis:
-  config-location: classpath:mybatis/mybatis_config.xml #指定全局配置文件位置
-  mapper-locations: classpath:mybatis/mapper/*.xml      #指定sql映射文件位置
+
 
 

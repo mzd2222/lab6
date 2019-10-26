@@ -2,10 +2,13 @@ package datatest.Entity;
 
 //配置实体类，使用jpa注解配置映射关系
 
+import datatest.Game.AttackWay;
+import datatest.Game.Role;
+
 import javax.persistence.*;
 
 @Entity  //告诉JPA这是一个实体类，即和数据表映射的类
-@Table(name = "tbl_user")  //告诉和哪个表对应，没有的话自动创建；省略，默认表名为User
+//@Table(name = "tbl_user")  //告诉和哪个表对应，没有的话自动创建；省略，默认表名为User
 public class User {
 
     @Id  //标记主键
@@ -15,8 +18,10 @@ public class User {
     @Column
     private String name;
     @Column
-    private String email;
+    private String CharacterName;
 
+    @Transient
+    private Role role = null;
 
     public Integer getId() {
         return id;
@@ -34,11 +39,23 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCharacterName() {
+        return CharacterName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCharacterName(String characterName) {
+        CharacterName = characterName;
+    }
+
+    public void setAttackWay(AttackWay attackWay) {
+        if (this.role != null) {
+            this.role.setWay(attackWay);
+        }
+    }
+
+    public void attack() {
+        if (this.role != null) {
+            this.role.attack();
+        }
     }
 }
