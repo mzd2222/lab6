@@ -38,21 +38,21 @@ public class Cruidconfig {
         return ben;
     }
 
-//    2.配置一个监控的filter
-@Bean
-public FilterRegistrationBean<WebStatFilter> webStat() {
-    FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<WebStatFilter>();
-    bean.setFilter(new WebStatFilter());
+    //    2.配置一个监控的filter
+    @Bean
+    public FilterRegistrationBean<WebStatFilter> webStat() {
+        FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<WebStatFilter>();
+        bean.setFilter(new WebStatFilter());
 
-    Map<String, String> init = new HashMap<>();
+        Map<String, String> init = new HashMap<>();
 
-    init.put("exclusions", "*.js, *.css, /druid/*");
+        init.put("exclusions", "*.js, *.css, /druid/*");
 
-    bean.setInitParameters(init);
-    bean.setUrlPatterns(Collections.singletonList("/*"));
+        bean.setInitParameters(init);
+        bean.setUrlPatterns(Collections.singletonList("/*"));
 
 
-    return bean;
-}
+        return bean;
+    }
 
 }

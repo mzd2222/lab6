@@ -1,9 +1,15 @@
 package datatest.Game;
 
-public interface Role {
+public abstract class Role {
 
-    public void attack();
+    private AttackWay way;
 
-    public void setWay(AttackWay way);
+    public void setWay(AttackWay way){
+        this.way = way;
+    }
+
+    public void attack() {
+        way.attack();
+    }
 
 }

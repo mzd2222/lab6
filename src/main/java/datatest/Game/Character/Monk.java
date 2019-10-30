@@ -3,12 +3,11 @@ package datatest.Game.Character;
 import datatest.Game.AttackWay;
 import datatest.Game.Role;
 
-public class Monk implements Role {
+public class Monk extends Role {
 
     private Integer red;
     private Integer blue;
     private String look;
-    private AttackWay way;
 
     {
         red = 300;
@@ -24,18 +23,9 @@ public class Monk implements Role {
         return look;
     }
 
-
     public Integer getRed() {
         return red;
     }
 
-    @Override
-    public void setWay(AttackWay way) {
-        this.way = way;
-    }
 
-    @Override
-    public void attack() {
-        way.attack();
-    }
 }
