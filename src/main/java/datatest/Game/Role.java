@@ -12,4 +12,8 @@ public abstract class Role {
         way.attack();
     }
 
+    public abstract Integer getRed();
+
+    public abstract Integer getBlue();
+
 }

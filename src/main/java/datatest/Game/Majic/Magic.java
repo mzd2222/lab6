@@ -1,10 +1,10 @@
-package datatest.Game.Physical;
+package datatest.Game.Majic;
 
 import datatest.Game.AttackWay;
 
-public abstract class Physical implements AttackWay {
+public abstract class Magic implements AttackWay {
 
-    private String Way = "Physical Attack";
+    private String Way = "Magic Attack";
 
     public String getWay() {
         return Way;

@@ -15,6 +15,7 @@ public class Ninja extends Role {
         look = "Ninja";
     }
 
+    @Override
     public Integer getBlue() {
         return blue;
     }
@@ -23,6 +24,7 @@ public class Ninja extends Role {
         return look;
     }
 
+    @Override
     public Integer getRed() {
         return red;
     }

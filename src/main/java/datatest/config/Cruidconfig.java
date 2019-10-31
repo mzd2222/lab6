@@ -51,7 +51,6 @@ public class Cruidconfig {
         bean.setInitParameters(init);
         bean.setUrlPatterns(Collections.singletonList("/*"));
 
-
         return bean;
     }
 

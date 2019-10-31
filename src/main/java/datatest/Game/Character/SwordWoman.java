@@ -15,6 +15,7 @@ public class SwordWoman extends Role {
         look = "SwordWoman";
     }
 
+    @Override
     public Integer getBlue() {
         return blue;
     }
@@ -23,8 +24,11 @@ public class SwordWoman extends Role {
         return look;
     }
 
+    @Override
     public Integer getRed() {
         return red;
     }
+
+
 
 }

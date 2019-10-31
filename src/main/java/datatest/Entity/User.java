@@ -23,6 +23,14 @@ public class User {
     @Transient
     private Role role = null;
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
     public Integer getId() {
         return id;
     }

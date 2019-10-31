@@ -22,19 +22,21 @@
 
 <div class="progress mt-5" style="max-width: 35%; height: 40px;">
     <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar"
-         style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">生命值
+         style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">生命值[[${red}]]
     </div>
 </div>
 
 <div class="progress" style="max-width: 35%; height: 30px;">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%"
-         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">魔法值
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"
+         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">魔法值[[${blue}]]
     </div>
 </div>
 
 <div th:if="${msg}=='monk'" id="bb" style="position: relative; top: 168px; right: -0px; max-width: 210px;">
     <h5 style="position: absolute; left: 35px; top: 20px;">和尚</h5>
-    <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">攻击</button>
+<!--    <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">攻击</button>-->
+    <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">物理攻击</button>
+    <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">魔法攻击</button>
     <img src="" th:src="@{/img/heshang.gif}" style="position: absolute;">
 </div>
 
