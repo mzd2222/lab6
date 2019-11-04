@@ -7,8 +7,10 @@
     <meta name="referrer" content="no-referrer"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" crossorigin="anonymous">
-    <script th:src="@{/js/jquery-3.4.1.js}" crossorigin="anonymous"></script>
 
+    <script th:src="@{/js/jquery-3.4.1.js}" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -32,23 +34,52 @@
     </div>
 </div>
 
+<button scr="" class="btn btn-info mt-3" style="">请选择攻击方式</button>
+<br>
+<div class="btn-group mt-3">
+    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">物理方式</button>
+
+    <div class="dropdown-menu">
+        <a href="javascript:void(0);" onclick="att(0);" class="dropdown-item">手🖐攻击</a>
+        <a href="javascript:void(0);" onclick="att(1);" class="dropdown-item">刀🔪攻击</a>
+        <a href="javascript:void(0);" onclick="att(2);" class="dropdown-item">剑🗡攻击</a>
+    </div>
+</div>
+
+<div class="btn-group mt-3">
+    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">魔法方式</button>
+
+    <div class="dropdown-menu">
+        <a href="javascript:void(0);" onclick="att(3);" class="dropdown-item">火🔥攻击</a>
+        <a href="javascript:void(0);" onclick="att(4);" class="dropdown-item">水💧攻击</a>
+        <a href="javascript:void(0);" onclick="att(5);" class="dropdown-item">金🌕攻击</a>
+    </div>
+</div>
+<br>
+<button scr="" class="btn btn-info mt-2" style="">按A D键左右移动，选择攻击后，点击攻击发动攻击</button>
+<br>
+<button scr="" class="btn btn-success mt-3" style="">已选择的攻击方式:</button>
+<button id="attack_way" scr="" class="btn btn-success mt-3" style="">无</button>
+
+
+
+
 <div th:if="${msg}=='monk'" id="bb" style="position: relative; top: 168px; right: -0px; max-width: 210px;">
     <h5 style="position: absolute; left: 35px; top: 20px;">和尚</h5>
 <!--    <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">攻击</button>-->
-    <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">物理攻击</button>
-    <button scr="" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">魔法攻击</button>
+    <button scr="" id="attk" class="btn btn-info" style="position: absolute; left: 28px; top: -20px;">攻击</button>
     <img src="" th:src="@{/img/heshang.gif}" style="position: absolute;">
 </div>
 
 <div th:if="${msg}=='swordwoman'" id="bb" style="position: relative; top: 168px; right: -0px; max-width: 210px;">
     <h5 style="position: absolute; left: 65px; top: -10px;">女侠</h5>
-    <button scr="" class="btn btn-info" style="position: absolute; left: 55px; top: -50px;">攻击</button>
+    <button scr="" id="attk" class="btn btn-info" style="position: absolute; left: 55px; top: -50px;">攻击</button>
     <img src="" th:src="@{/img/nvxia.jpg}" style="max-width: 190px; position: absolute;">
 </div>
 
 <div th:if="${msg}=='ninja'" id="bb" style="position: relative; top: 165px; right: -0px; max-width: 210px;">
     <h5 style="position: absolute; left: 70px; top: -18px;">忍者</h5>
-    <button scr="" class="btn btn-info" style="position: absolute; left: 62px; top: -60px;">攻击</button>
+    <button scr="" id="attk" class="btn btn-info" style="position: absolute; left: 62px; top: -60px;">攻击</button>
     <img src="" th:src="@{/img/renzhe.png}" style="max-width: 190px; position: absolute;">
 </div>
 
@@ -58,6 +89,15 @@
 </body>
 
 <script>
+
+    var roles = ['handattack','knifeattack','swordattack','fireattack','waterattack','goldattack']
+    var attackway = ''
+    function att(param) {
+        attackway = roles[param]
+        document.getElementById('attack_way').innerHTML = attackway
+        // alert(attackway)
+    }
+
     function GetRequest() {
         var url = location.search;        //获取url中"?"符后的字串
         var theRequest = new Object();
@@ -70,6 +110,33 @@
         }
         return theRequest;
     }
+    
+    $('#attk').click(function () {
+        if (attackway != ''){
+
+            $.ajax({
+                type: "GET",
+                url: "/attack/"+attackway,
+                success: function (response) {
+                    // alert(response);
+                    if (response == 'ok') {
+                        alert('攻击成功，检查控制台');
+                        attackway = '';
+                        document.getElementById('attack_way').innerHTML = '无'
+                    } else {
+                        alert('攻击失败');
+                    }
+                },
+                error: function (response) {
+                    alert("连接失败，检查网络")
+                }
+            });
+
+        }
+        else {
+            alert("请先选择攻击方式")
+        }
+    })
 
     var msg = GetRequest();
     var px = 0;
