@@ -1,13 +1,9 @@
 package datatest.Controller;
 
-import datatest.Dao.UserDao;
-import datatest.Entity.User;
-import datatest.Factory.RoleFactory;
-import datatest.Game.AttackWay;
-import datatest.Game.Role;
+import datatest.Dao.BookDao;
+import datatest.Entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,64 +14,60 @@ import java.util.Map;
 public class HelloController {
 
     @Autowired
-    UserDao userDao;
+    BookDao bookDao;
 
-    User user;
-
-    @GetMapping("/play")
-    public String Hello(Model model) {
-        if (this.user != null){
-        model.addAttribute("msg", this.user.getCharacterName());
-        model.addAttribute("red",this.user.getRole().getRed());
-        model.addAttribute("blue",this.user.getRole().getBlue());
-        return "play"; }
-        else return "index";
+    @GetMapping("index")
+    public String main_page(){
+        System.out.println("123");
+        return "index";
     }
 
     @ResponseBody
-    @PostMapping("/user")   //注册
-    public String insertUser(User user) {
-        List<User> all = userDao.findAll();
-        for (User a : all) {
-            if (a.getName().equals(user.getName())) {
-                this.user = a;
+    @PostMapping("/add_book")   //新增图书
+    public String insertBook(Book book) {
+        List<Book> all = bookDao.findAll();
+        for (Book a : all) {
+            if (a.getBook_name().equals(book.getBook_name())) {
                 return "error";
             }
         }
-        userDao.save(user);
+        bookDao.save(book);
         return "ok";
     }
 
-    @ResponseBody
-    @PostMapping("/log")
-    public Map log(String username) {
-        List<User> all = userDao.findAll();
-        Map<String, String> map = new HashMap<>();
 
-        for (User a : all) {
-            if (a.getName().equals(username)) {
-                this.user = a;
-                Role role = RoleFactory.getRoleByName(a.getCharacterName());
-                this.user.setRole(role);
-                map.put("status", "ok");
-                map.put("username", this.user.getName());
-                return map;
+    @ResponseBody
+    @PostMapping("/delete_book")   //删除图书
+    public String deleteBook(Book book) {
+        List<Book> all = bookDao.findAll();
+        for (Book a : all) {
+            if (a.getBook_name().equals(book.getBook_name())) {
+                System.out.println("123");
+                bookDao.delete(a);
+                return "ok";
             }
         }
-        map.put("status", "error");
-        return map;
+        return "error";
     }
 
     @ResponseBody
-    @GetMapping("/attack/{attackway}")
-    public String attack(@PathVariable("attackway") String name){
-        AttackWay attackWay = RoleFactory.getAttackWayByName(name);
-        if(attackWay != null){
-            this.user.setAttackWay(attackWay);
-            this.user.attack();
-            return "ok";
+    @GetMapping("/search_book/{name}")   // 根据书名或作者名查找图书
+    public Map search_book_name(@PathVariable("name") String name) {
+        List<Book> books1 = bookDao.findByname(name);
+        List<Book> books2 = bookDao.findByauthor(name);
+        Map<String, Object> map = new HashMap<>();
+
+        books1.addAll(books2);
+
+        if(books1.size() > 0){
+            map.put("status", "ok");
+            map.put("books", books1);
+            return map;
         }
-        return "error";
+
+        map.put("status", "error");
+        return map;
+
     }
 
 }

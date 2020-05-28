@@ -10,94 +10,163 @@
     <script th:src="@{/js/jquery-3.4.1.js}" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-success">
-<div id="ini" style="margin-top: 180px;">
-</div>
+<body>
+
+    <div>
+        <h3>添加书本</h3>
+        <label for="Book_name">书名</label>
+        <input type="text" name="Book_name" id="Book_name">
+        <br>
+        <label for="Author">作者</label>
+        <input type="text" name="Author" id="Author">
+        <br>
+        <label for="Description">简介</label>
+        <input type="text" name="Description" id="Description">
+        <br>
+
+        <button onclick="add_book()">添加</button>
+    </div>
+
+    <br>
+    <br>
+
+    <div>
+        <h3>根据书名或作者查找书、删除书</h3>
+        <input placeholder="输入书名或作者" type="text" name="search" id="search">
+        <button onclick="search()">搜索</button>
+    </div>
+
+    <div id="show">
+
+    </div>
+
+
+</body>
 
 <script>
-    var username1;  //登录
-    var username2;  //注册
-
-    $(document).ready(denglu());
-
-    function denglu() {
-        document.getElementById('ini').innerHTML = '<div class="container" style="display: inline;" id="zhuce"><h1 class="row justify-content-center font-weight-normal text-light" style="font-size: 50px; margin-top: 10px;">请登录</h1><div class="row justify-content-center" style="margin-top: 50px;"><label for="username" class="sr-only">user name</label><input class="col-6 form-control-lg" type="text" id="username1" name="username" placeholder="username" required></div><div class="row justify-content-center" style="margin-top: 30px;"><button class="col-3 btn btn-lg btn-outline-primary" id="btn1" style="width: 450px;">登录</button></div><div class="row justify-content-center"><a class="mt-0 text-center text-light" href="javascript:0" onclick="zhuce();">免费注册</a></div></div>';
-        $("#btn1").click(function (params) {
-            username = $("#username1").val();
-
-            $.ajax({
-                type: "POST",
-                url: "/log",
-                data: {"username": username},
-                success: function (response) {
-                    // alert(response);
-                    if (response['status'] == 'ok') {
-                        alert('登录成功');
-                        // alert(response['username']);
-                        window.location.href = '/play';
-                    } else {
-                        // alert(response['status']);
-                        alert('没有这个用户');
-                    }
-                },
-                error: function (response) {
-                    alert("连接失败，检查网络")
+    function add_book(){
+        $.ajax({
+            url: '/add_book',
+            method: 'POST',
+            data: {"Book_name":$("#Book_name").val(),
+                "Description":$("#Description").val(),
+                "Author":$("#Author").val(),
+            },
+            success: function (data) {
+                if(data == 'ok'){
+                    alert('添加成功')
                 }
-            });
-        });
+                else{
+                    alert('已存在')
+                }
+            },
+            error: function (data) {
+                alert("检查网络")
+            }
+        })
     }
 
-    function zhuce() {
-        document.getElementById('zhuce').innerHTML = '<div class="container" style="display: inline;" id="denglu"><h1 class="row justify-content-center font-weight-normal text-light" style="font-size: 50px; margin-top: 10px;">请注册</h1><div class="row justify-content-center" style="margin-top: 50px;"><label for="username" class="sr-only">user name</label><input class="col-6 form-control-lg" type="text" id="username2" name="username" placeholder="username" required></div><div class="row justify-content-center mt-3"><h5 class="col-1 text-light">选择角色</h5><input type="checkbox" id="checkbox1"><h5 class="col-1 text-light">和尚</h5><input type="checkbox" id="checkbox2"><h5 class="col-1 text-light">女侠</h5><input type="checkbox" id="checkbox3"><h5 class="col-1 text-light">忍者</h5></div><div class="row justify-content-center" style="margin-top: 30px;"><button class="col-3 btn btn-lg btn-outline-primary" id="btn2" style="width: 450px;">注册</button></div><div class="row justify-content-center"><a class="mt-0 text-center text-light" href="javascript:0" onclick="denglu();">已有账号，去登陆</a></div></div>';
-        $("#btn2").click(function (params) {
-            var c1 = $("#checkbox1").prop("checked")
-            var c2 = $("#checkbox2").prop("checked")
-            var c3 = $("#checkbox3").prop("checked")
-            username2 = $("#username2").val();
-            if (c1 || c2 || c3) {
-                if ((c1 && c2) || (c1 && c3) || (c2 && c3)) {
-                    alert("只能选一个角色");
+    function search() {
+        $("#show").html("")
+        $.ajax({
+            url: '/search_book/' + $("#search").val(),
+            method: 'GET',
 
-                } else if (username2 != '') {
-                    alert(username2);
-                    if (c1) {
-                        var characterName = "monk";
+            success: function (data) {
+                if(data['status'] == 'ok') {
+                    // console.log(data['books'])
+                    for (var i = 0; i < data['books'].length; i++) {
+
+                        var name_l = $('<label>', {
+                            for: "spell" + (i + 3),
+                            text: "书名:"
+                        });
+                        var name = $('<input>', {
+                            id: "spell" + (i + 3),
+                            value: data['books'][i]['book_name'],
+                            readOnly: true,
+                            width: 150
+                        });
+
+                        var author_l = $('<label>', {
+                            for: "tp" + (i + 3),
+                            text: "作者:"
+                        });
+                        var author = $('<input>', {
+                            id: "tp" + (i + 3),
+                            value: data['books'][i]['author'],
+                            width: 250,
+                            readOnly: true,
+                        });
+
+                        var description_l = $('<label>', {
+                            for: "chinese" + (i + 3),
+                            text: "简介:"
+                        });
+                        var description = $('<textarea>', {
+                            id: "chinese" + (i + 3),
+                            text: data['books'][i]['description'],
+                            readOnly: true,
+                            width: 520,
+                            height: 100
+                        });
+
+                        var div = $('<div>', {
+                            id: i
+                        })
+
+                        div.append("<br>")
+                        div.append(name_l)
+                        div.append(name)
+                        div.append(author_l)
+                        div.append(author)
+                        div.append("<br>")
+                        div.append(description_l)
+                        div.append("<br>")
+                        div.append(description)
+                        div.append("<br>")
+                        div.append("<button onclick=delete_book('" +
+                            data['books'][i]['book_name'] + "','" +
+                            data['books'][i]['author'] + "','" +
+                            data['books'][i]['description']+"')>删除此书</button>")
+
+                        div.appendTo("#show")
                     }
-                    if (c2) {
-                        var characterName = "swordwoman";
-                    }
-                    if (c3) {
-                        var characterName = "ninja";
-                    }
-                    $.ajax({
-                        type: "POST",
-                        url: "/user",
-                        data: {"name": username2, "characterName": characterName},
-                        success: function (response) {
-                            // alert(response);
-                            if (response == 'ok') {
-                                alert('注册成功');
-                                denglu();
-                            } else {
-                                alert('已经有这个用户');
-                            }
-                        },
-                        error: function (response) {
-                            alert("连接失败，检查网络")
-                        }
-                    });
-                } else {
-                    alert("用户名不能为空");
                 }
-            } else {
-                alert("至少选择一个角色");
+                else{
+                    alert('没找到')
+                }
+            },
+            error: function (data) {
+                alert("检查网络")
+            }
+        })
+    }
+
+    function delete_book(book_name, author, description){
+        $.ajax({
+            url: '/delete_book',
+            method: 'POST',
+            data: {"Book_name": book_name,
+                "Description": author,
+                "Author": description
+            },
+            success: function (data) {
+                if(data == 'ok'){
+                    alert('删除成功');
+                    search();
+                }
+                else{
+                    alert('404')
+                }
+            },
+            error: function (data) {
+                alert("检查网络")
             }
         })
     }
 
 
 </script>
-
-</body>
 
 </html>
